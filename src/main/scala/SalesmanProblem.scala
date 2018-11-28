@@ -16,14 +16,16 @@ import scalafx.scene.text.Text
 import scalafx.scene.input.{KeyCodeCombination, KeyCode, KeyCombination}
 
 object ScalaFXHelloWorld extends JFXApp {
-  val canvas = new Canvas(600, 600)
-  val gc = canvas.graphicsContext2D
+  private val CANVAS_SIZE = 600
+  private val canvas = new Canvas(CANVAS_SIZE, CANVAS_SIZE)
+  private val gc = canvas.graphicsContext2D
+
   val mainBox = new HBox {
     gc.strokePolyline(Seq(
       (0, 0),
-      (600, 600),
-      (0, 600),
-      (600, 0),
+      (CANVAS_SIZE, CANVAS_SIZE),
+      (0, CANVAS_SIZE),
+      (CANVAS_SIZE, 0),
       (0, 0),
     ))
 
@@ -36,7 +38,7 @@ object ScalaFXHelloWorld extends JFXApp {
     val _menuBar = new MenuBar
 
     // ラジオボタン
-    val numberMenu = new Menu("Radio")
+    val numberMenu = new Menu("Numbers")
     val numberMenuItems =
       Seq(100, 500, 1000, 1500, 2000)
       .map(n => new RadioMenuItem(n.toString))
@@ -46,7 +48,9 @@ object ScalaFXHelloWorld extends JFXApp {
     numberMenu.items = numberMenuItems
     // radioMenuが更新されたら gcを更新
     numberMenu.onAction = (e: ActionEvent) => {
-      gc.clearRect(0, 0, 300, 300)
+      gc.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE)
+      val s = numberMenuItems.filter(x => x.selected.value).head.text.value
+      gc.fillText(s, CANVAS_SIZE / 2, CANVAS_SIZE / 2)
     }
 
     _menuBar.menus = List(numberMenu)
