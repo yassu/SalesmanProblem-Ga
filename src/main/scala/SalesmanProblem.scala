@@ -7,25 +7,19 @@ import scalafx.geometry.Insets
 import scalafx.scene.control.{Spinner, Button, Label}
 import scalafx.scene.Scene
 import scalafx.scene.layout.{HBox, VBox}
-// import scalafx.scene.paint.Color._   // 他の色を使うときに入れる
+import scalafx.scene.paint.Color._   // 他の色を使うときに入れる
 import scalafx.scene.canvas._
 import scala.util.Random
 
 object SalesmanProblem extends JFXApp {
   private val CANVAS_SIZE = 600
+  private val POINT_SIZE = 10
   private val canvas = new Canvas(CANVAS_SIZE, CANVAS_SIZE)
   private val gc = canvas.graphicsContext2D
   private var points = Seq[(Int, Int)]()
 
   val mainBox = new HBox {
     padding = Insets(20)
-    gc.strokePolyline(Seq(
-      (0, 0),
-      (CANVAS_SIZE, CANVAS_SIZE),
-      (0, CANVAS_SIZE),
-      (CANVAS_SIZE, 0),
-      (0, 0),
-    ))
 
     children = Seq(
       canvas,
@@ -44,19 +38,24 @@ object SalesmanProblem extends JFXApp {
         val n = numberOfSamplesSpinner.value.value
         points = (0 until n).map(n => (Random.nextInt(CANVAS_SIZE), Random.nextInt(CANVAS_SIZE)))
           .toSeq
-        points.foreach(p => gc.fillOval(p._1, p._2, 10, 10))
+        points.foreach(p => gc.fillOval(p._1, p._2, POINT_SIZE, POINT_SIZE))
       }
     }
 
     val countOfEvalButton = new Button("Count Of Eval") {disable=false}
     val countOfEvalSpinner = new Spinner[Int](1000, 10000, 1000, 1000)
     countOfEvalSpinner.maxWidth = 90
+
     val runButton = new Button {
       text="Run"
       onAction = () => {
-        println("Run Button is pressed.")
+        val oldStroke = gc.stroke
+        gc.stroke = RED
+        gc.strokePolyline(points.map(t => (t._1.toDouble + POINT_SIZE / 2.0, t._2.toDouble + POINT_SIZE / 2.0)))
+        gc.stroke = oldStroke
       }
     }
+
     val reRunButton = new Button {
       text="ReRun"
       onAction = () => {
