@@ -6,15 +6,10 @@ import scalafx.application.JFXApp.PrimaryStage
 import scalafx.geometry.Insets
 import scalafx.scene.control.{Spinner, Button, Label}
 import scalafx.scene.Scene
-import scalafx.scene.effect.DropShadow
 import scalafx.scene.layout.{HBox, VBox}
-import scalafx.event.{ActionEvent}
-import scalafx.scene.paint.Color._
+// import scalafx.scene.paint.Color._   // 他の色を使うときに入れる
 import scalafx.scene.canvas._
-import scalafx.scene.paint.{Stops, LinearGradient}
-import scalafx.scene.text.Text
 import scala.util.Random
-import scalafx.scene.input.{KeyCodeCombination, KeyCode, KeyCombination}
 
 object SalesmanProblem extends JFXApp {
   private val CANVAS_SIZE = 600
@@ -89,7 +84,6 @@ object SalesmanProblem extends JFXApp {
       content = new VBox {
         children=Seq(
           configBox,
-          // menuBar,
           mainBox,
         )
       }
