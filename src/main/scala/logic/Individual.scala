@@ -1,5 +1,6 @@
 package salesman_problem.logic
 import scala.collection.mutable
+import scala.util.Random
 
 case class Individual[T](val rawItems: Seq[T]) {
   def size: Int = rawItems.size
@@ -39,4 +40,15 @@ object Individual {
         crossOverOne[T](parent1, parent2, fromLeft, untilRight),
         crossOverOne[T](parent2, parent1, fromLeft, untilRight),
       )
+  private[logic] def crossOver[T](
+      parent1: Individual[T], parent2: Individual[T]):
+      (Individual[T], Individual[T]) = {
+    val len = parent1.size
+    val fromLeft = Random.nextInt(len)
+    val untilRight = Random.nextInt(len)
+    (
+      crossOverOne[T](parent1, parent2, fromLeft, untilRight),
+      crossOverOne[T](parent2, parent1, fromLeft, untilRight),
+    )
+  }
 }
