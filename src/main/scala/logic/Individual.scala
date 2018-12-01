@@ -32,4 +32,11 @@ object Individual {
         for(i <- 0 until len) yield rawChild(i)
       )
     }
+  private[logic] def crossOver[T](
+      parent1: Individual[T], parent2: Individual[T], fromLeft: Int, untilRight: Int):
+      (Individual[T], Individual[T]) =
+      (
+        crossOverOne[T](parent1, parent2, fromLeft, untilRight),
+        crossOverOne[T](parent2, parent1, fromLeft, untilRight),
+      )
 }
