@@ -25,7 +25,14 @@ class IndividualSpec extends FunSpec {
     }
   }
 
-  describe("About CrossOver") {
+  describe("About CrossOver with fromLeft and untilRight parameters") {
+    it("If parent1 == parent2 => child1 = parent1, child2 = parent2") {
+      val parent1 = Individual[Int](Seq(1, 2, 3, 4, 5, 6))
+      val parent2 = Individual[Int](Seq(1, 2, 3, 4, 5, 6))
+      val (child1, child2) = Individual.crossOver[Int](parent1, parent2, 2, 4)
+      assert(parent1 == child1 && parent2 == child2)
+    }
+
     it("complex test") {
       val parent1 = Individual[Int](Seq(2, 3, 1, 5, 4))
       val parent2 = Individual[Int](Seq(2, 4, 3, 5, 1))
