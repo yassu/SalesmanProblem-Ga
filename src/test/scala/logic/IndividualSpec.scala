@@ -10,6 +10,18 @@ class IndividualSpec extends FunSpec {
     }
   }
 
+  describe("mutation") {
+    it("with pos1 and pos2 parameter") {
+      val individual = Individual[Int](Seq(6, 2, 3, 4, 5, 1))
+      assert(individual.mutation(2, 4) == Individual[Int](Seq(6, 2, 5, 4, 3, 1)))
+    }
+
+    it("without parameter") {
+      val individual = Individual[Int](Seq(1, 2, 3, 4, 5, 6))
+      assert(individual.mutation.rawItems.toSet == Set(1, 2, 3, 4, 5, 6))
+    }
+  }
+
   describe("About CrossOverOne") {
     it("If parent1 == parent2 => child1 = parent1, child2 = parent2") {
       val parent1 = Individual[Int](Seq(1, 2, 3, 4, 5, 6))

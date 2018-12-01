@@ -5,6 +5,24 @@ import scala.util.Random
 private[logic] case class Individual[T](val rawItems: Seq[T]) {
   def size: Int = rawItems.size
   def apply(ind: Int): T = rawItems(ind)
+
+  // swap
+  def mutation(pos1: Int, pos2: Int): Individual[T] = Individual(
+    (0 until size)
+      .sortBy(i =>
+        if (i != pos1 && i != pos2) i
+        else if (i == pos1) pos2
+        else pos1
+      )
+      .map(i => rawItems(i))
+  )
+
+  def mutation: Individual[T] = {
+    val len = size
+    val pos1 = Random.nextInt(len)
+    val pos2 = Random.nextInt(len)
+    mutation(pos1, pos2)
+  }
 }
 
 private[logic] object Individual {
