@@ -9,7 +9,6 @@ private[logic] case class Individual[T](
   def size: Int = rawItems.size
   def apply(ind: Int): T = rawItems(ind)
 
-  // swap
   def mutation(pos1: Int, pos2: Int): Individual[T] = Individual(
     (0 until size)
       .map(i =>

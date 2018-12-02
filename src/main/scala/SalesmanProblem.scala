@@ -60,8 +60,6 @@ object SalesmanProblem extends JFXApp {
     val runButton = new Button {
       text="Run"
       onAction = () => {
-        val n = numberOfSamplesSpinner.value.value
-
         population = logic.Population(points, SalesmanEvaluationFunction)
         val numberOfEvalCount = countOfEvalSpinner.value.value
         population.evolve(numberOfEvalCount)
@@ -86,7 +84,7 @@ object SalesmanProblem extends JFXApp {
   def updateStateLabel() = {
     stateLabel.text =
       s"evolvedCount: ${population.evolvedCount}, " +
-        s"score: ${SalesmanEvaluationFunction.score(points).toInt.toString}, " +
+        s"score: ${SalesmanEvaluationFunction.score(points).toLong.toString}, " +
         s"takeTime(sec): ${population.spentMSecForEvolve / 1000}"
   }
 
