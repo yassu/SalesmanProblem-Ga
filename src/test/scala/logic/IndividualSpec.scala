@@ -12,8 +12,13 @@ class IndividualSpec extends FunSpec {
 
   describe("mutation") {
     it("with pos1 and pos2 parameter") {
-      val individual = Individual[Int](Seq(6, 2, 3, 4, 5, 1), TestEvalFunc)
-      assert(individual.mutation(2, 4) == Individual[Int](Seq(6, 2, 5, 4, 3, 1), TestEvalFunc))
+      val individual = Individual[Int](Seq(0, 1, 2, 3, 4, 5, 6, 7, 8), TestEvalFunc)
+      assert(individual.mutation(3, 7) == Individual[Int](Seq(0, 1, 2, 6, 5, 4, 3, 7, 8), TestEvalFunc))
+    }
+
+    it("with pos1 and pos2 parameter2") {
+      val individual = Individual[Int](Seq(0, 1, 2, 3, 4, 5, 6, 7, 8), TestEvalFunc)
+      assert(individual.mutation(2, 7) == Individual[Int](Seq(0, 1, 6, 5, 4, 3, 2, 7, 8), TestEvalFunc))
     }
 
     it("without parameter") {

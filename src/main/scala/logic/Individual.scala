@@ -12,11 +12,9 @@ private[logic] case class Individual[T](
   // swap
   def mutation(pos1: Int, pos2: Int): Individual[T] = Individual(
     (0 until size)
-      .sortBy(i =>
-        if (i != pos1 && i != pos2) i
-        else if (i == pos1) pos2
-        else pos1
-      )
+      .map(i =>
+        if(i < pos1 || i >= pos2) i
+        else pos2 - i + pos1 - 1)
       .map(i => rawItems(i)),
       evalFunction
   )
