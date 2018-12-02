@@ -14,6 +14,8 @@ case class Population[T](initRawIndividual: Seq[T], evalFunction: EvaluationFunc
     Individual(initIndividual.rawItems.sortBy(_ => Random.nextInt), evalFunction))
     .sortBy(x => evalFunction.score(x.rawItems))
 
+  lazy val bestIndividualSeq: Seq[T] = individuals.head.rawItems
+
   private[logic] def evolveOne(): Unit =
     individuals = (eliteSelection ++: mutation ++: crossOver)
       .sortBy(x => evalFunction.score(x.rawItems))
