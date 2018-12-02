@@ -9,8 +9,9 @@ case class Population[T](initIndividual: Individual[T], evalFunction: Evaluation
   val numberOfMutation = 10
   val numberOfCrossingOver = (size - numberOfEliteSelection - numberOfMutation) / 2
 
-  private var individuals = for(i <- (0 until size)) yield
-    Individual(initIndividual.rawItems.sortBy(_ => Random.nextInt))
+  private var individuals = (for(i <- (0 until size)) yield
+    Individual(initIndividual.rawItems.sortBy(_ => Random.nextInt)))
+    .sortBy(x => evalFunction.score(x.rawItems))
 
   private def eliteSelection: Seq[Individual[T]] = individuals.take(numberOfEliteSelection)
   private def mutation: Seq[Individual[T]] = {
