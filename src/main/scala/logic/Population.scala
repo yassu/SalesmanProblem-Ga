@@ -11,7 +11,7 @@ case class Population[T](initRawIndividual: Seq[T], evalFunction: EvaluationFunc
   val numberOfCrossingOver = (size - numberOfEliteSelection - numberOfMutation) / 2
 
   private[logic] var individuals: Seq[Individual[T]] = (for(i <- (0 until size)) yield
-    Individual(initIndividual.rawItems.sortBy(_ => Random.nextInt), evalFunction))
+    Individual(Random.shuffle(initIndividual.rawItems), evalFunction))
     .sortBy(x => evalFunction.score(x.rawItems))
 
   lazy val bestIndividualSeq: Seq[T] = individuals.head.rawItems
