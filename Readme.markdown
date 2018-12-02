@@ -6,4 +6,4 @@ SalesmanProblem
 jarファイルはassets/以下にありますが,
 このjarファイルはjava8でしか確認していません.
 
-スクリーンショットは[こちら](http://recordit.co/kjRK6Hrdkd)です.
+![ScreenShot](https://github.com/yassu/SalesmanProblem-Ga/blob/master/assets/salesmanProblem.gif?raw=true)
