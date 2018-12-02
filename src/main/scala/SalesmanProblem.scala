@@ -58,27 +58,9 @@ object SalesmanProblem extends JFXApp {
       text="Run"
       onAction = () => {
         val n = numberOfSamplesSpinner.value.value
-        points = (0 until n).map(n => (Random.nextInt(CANVAS_SIZE), Random.nextInt(CANVAS_SIZE)))
-          .toSeq
 
         val numberOfEvalCount = countOfEvalSpinner.value.value
         population = logic.Population(points, SalesmanEvaluationFunction)
-        population.evolve(numberOfEvalCount)
-        points = population.bestIndividualSeq
-
-        gc.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE)
-        points.foreach(p => gc.fillOval(p._1, p._2, POINT_SIZE, POINT_SIZE))
-        val oldStroke = gc.stroke
-        gc.stroke = RED
-        gc.strokePolyline(points.map(t => (t._1.toDouble + POINT_SIZE / 2.0, t._2.toDouble + POINT_SIZE / 2.0)))
-        gc.stroke = oldStroke
-      }
-    }
-
-    val reRunButton = new Button {
-      text="ReRun"
-      onAction = () => {
-        val numberOfEvalCount = countOfEvalSpinner.value.value
         population.evolve(numberOfEvalCount)
         points = population.bestIndividualSeq
 
@@ -100,7 +82,6 @@ object SalesmanProblem extends JFXApp {
       countOfEvalButton,
       countOfEvalSpinner,
       runButton,
-      reRunButton,
     )
   }
 
