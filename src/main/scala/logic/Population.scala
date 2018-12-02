@@ -9,17 +9,26 @@ case class Population[T](initIndividual: Individual[T], evalFunction: Evaluation
   val numberOfMutation = 10
   val numberOfCrossingOver = (size - numberOfEliteSelection - numberOfMutation) / 2
 
-  private var individuals = (for(i <- (0 until size)) yield
+  private[logic] var individuals: Seq[Individual[T]] = (for(i <- (0 until size)) yield
     Individual(initIndividual.rawItems.sortBy(_ => Random.nextInt)))
     .sortBy(x => evalFunction.score(x.rawItems))
 
+  private[logic] def evolveOne(): Unit =
+    individuals = (eliteSelection ++: mutation ++: crossOver)
+      .sortBy(x => evalFunction.score(x.rawItems))
+
+  def evolve(count: Int): Unit =
+    (0 until count).foreach(_ => evolveOne())
+
   private def eliteSelection: Seq[Individual[T]] = individuals.take(numberOfEliteSelection)
+
   private def mutation: Seq[Individual[T]] = {
     (0 until numberOfMutation).map(i => {
       val parent = selectNicer
       parent.mutation
     })
   }
+
   private def crossOver: Seq[Individual[T]] =
     (0 until numberOfCrossingOver)
     .map(i => {
@@ -28,7 +37,7 @@ case class Population[T](initIndividual: Individual[T], evalFunction: Evaluation
       val (child1, child2) = Individual.crossOver(parent1, parent2)
       Seq(child1, child2)
     })
-    .flatMap(x => x)
+    .flatMap(x => x).toSeq
 
   private def selectNicer: Individual[T] =
     Random.shuffle((0 until initIndividual.size).toList).take(10)

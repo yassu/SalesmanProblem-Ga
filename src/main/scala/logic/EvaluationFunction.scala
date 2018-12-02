@@ -2,6 +2,8 @@ package salesman_problem.logic
 
 trait EvaluationFunction[T] {
   def score(individual: Seq[T]): Double
+  def score(individual: Individual[T]): Double =
+    score(individual.rawItems)
 }
 
 private[logic] object TestEvalFunc extends EvaluationFunction[Int] {
