@@ -44,18 +44,12 @@ object SalesmanProblem extends JFXApp {
     val numberOfSampleButton = new Button {
       text="Init"
       onAction = () => {
-        gc.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE)
         // TODO: 数値にできない場合どうするか考える
         val n = numberOfSamplesSpinner.value.value
         points = (0 until n).map(n => (Random.nextInt(CANVAS_SIZE), Random.nextInt(CANVAS_SIZE)))
           .toSeq
         updateStateLabel()
-
-        val oldStroke = gc.stroke
-        gc.stroke = RED
-        gc.strokePolyline(points.map(t => (t._1.toDouble + POINT_SIZE / 2.0, t._2.toDouble + POINT_SIZE / 2.0)))
-        gc.stroke = oldStroke
-        points.foreach(p => gc.fillOval(p._1, p._2, POINT_SIZE, POINT_SIZE))
+        updateCanvas()
       }
     }
 
@@ -73,13 +67,7 @@ object SalesmanProblem extends JFXApp {
         population.evolve(numberOfEvalCount)
         points = population.bestIndividualSeq
         updateStateLabel()
-
-        gc.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE)
-        points.foreach(p => gc.fillOval(p._1, p._2, POINT_SIZE, POINT_SIZE))
-        val oldStroke = gc.stroke
-        gc.stroke = RED
-        gc.strokePolyline(points.map(t => (t._1.toDouble + POINT_SIZE / 2.0, t._2.toDouble + POINT_SIZE / 2.0)))
-        gc.stroke = oldStroke
+        updateCanvas()
       }
     }
 
@@ -99,6 +87,15 @@ object SalesmanProblem extends JFXApp {
     stateLabel.text =
       s"evolvedCount: ${population.evolvedCount}, " +
         "score: " + SalesmanEvaluationFunction.score(points).toInt.toString
+  }
+
+  def updateCanvas() = {
+    gc.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE)
+    val oldStroke = gc.stroke
+    gc.stroke = RED
+    gc.strokePolyline(points.map(t => (t._1.toDouble + POINT_SIZE / 2.0, t._2.toDouble + POINT_SIZE / 2.0)))
+    gc.stroke = oldStroke
+    points.foreach(p => gc.fillOval(p._1, p._2, POINT_SIZE, POINT_SIZE))
   }
 
   stage = new PrimaryStage {
