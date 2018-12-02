@@ -25,6 +25,9 @@ case class Population[T](initRawIndividual: Seq[T], evalFunction: EvaluationFunc
 
   def evolve(count: Int): Unit =
     (0 until count).foreach(j => {
+      if ((j + 1) % 100 == 0) {
+        println(s"count: ${j + 1}, score: ${individuals.head.score}")
+      }
       evolveOne()
     })
 
@@ -49,7 +52,7 @@ case class Population[T](initRawIndividual: Seq[T], evalFunction: EvaluationFunc
     .flatMap(x => x).toSeq
 
   private def selectNicer: Individual[T] = {
-    Random.shuffle((0 until initIndividual.size).toList).take(10)
+    Random.shuffle((0 until individuals.size).toList).take(10)
       .map(i => individuals(i))
       .minBy(x => x.score)
   }

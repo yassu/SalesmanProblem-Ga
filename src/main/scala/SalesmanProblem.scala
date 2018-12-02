@@ -10,7 +10,6 @@ import scalafx.scene.layout.{HBox, VBox}
 import scalafx.scene.paint.Color._   // 他の色を使うときに入れる
 import scalafx.scene.canvas._
 import scala.util.Random
-import salesman_problem.logic
 
 object SalesmanProblem extends JFXApp {
   private val CANVAS_SIZE = 600
@@ -40,7 +39,7 @@ object SalesmanProblem extends JFXApp {
 
   val configBox = new HBox {
     val numberOfSamplesButton = new Button("Number Of Points") {disable=false}
-    val numberOfSamplesSpinner = new Spinner[Int](10, 100, 30, 5)
+    val numberOfSamplesSpinner = new Spinner[Int](10, 1000, 30, 10)
     numberOfSamplesSpinner.maxWidth = 70
     val numberOfSampleButton = new Button {
       text="Init"
@@ -99,7 +98,7 @@ object SalesmanProblem extends JFXApp {
   def updateStateLabel() = {
     stateLabel.text =
       s"evolvedCount: ${population.evolvedCount}, " +
-      "score: " + SalesmanEvaluationFunction.score(points).toInt.toString
+        "score: " + SalesmanEvaluationFunction.score(points).toInt.toString
   }
 
   stage = new PrimaryStage {
