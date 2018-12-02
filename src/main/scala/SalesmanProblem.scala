@@ -57,6 +57,10 @@ object SalesmanProblem extends JFXApp {
     val runButton = new Button {
       text="Run"
       onAction = () => {
+        val n = numberOfSamplesSpinner.value.value
+        points = (0 until n).map(n => (Random.nextInt(CANVAS_SIZE), Random.nextInt(CANVAS_SIZE)))
+          .toSeq
+
         val numberOfEvalCount = countOfEvalSpinner.value.value
         population = logic.Population(points, SalesmanEvaluationFunction)
         population.evolve(numberOfEvalCount)

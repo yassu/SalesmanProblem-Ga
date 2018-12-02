@@ -12,18 +12,20 @@ case class Population[T](initRawIndividual: Seq[T], evalFunction: EvaluationFunc
 
   private[logic] var individuals: Seq[Individual[T]] = (for(i <- (0 until size)) yield
     Individual(Random.shuffle(initIndividual.rawItems), evalFunction))
-    .sortBy(x => evalFunction.score(x.rawItems))
+    .sortBy(x => x.score)
 
   lazy val bestIndividualSeq: Seq[T] = individuals.head.rawItems
 
   private[logic] def evolveOne(): Unit =
     individuals = (eliteSelection ++: mutation ++: crossOver)
-      .sortBy(x => evalFunction.score(x.rawItems))
+      .sortBy(x => x.score)
 
   def evolve(count: Int): Unit =
     (0 until count).foreach(j => {
       if ((j + 1) % 100 == 0) {
-        println(j)
+        print(j + 1)
+        println(s" evaluated value: ${individuals.head.score}")
+        // individuals.foreach(println)
       }
       evolveOne()
     })
@@ -49,6 +51,6 @@ case class Population[T](initRawIndividual: Seq[T], evalFunction: EvaluationFunc
   private def selectNicer: Individual[T] = {
     Random.shuffle((0 until initIndividual.size).toList).take(10)
       .map(i => individuals(i))
-      .minBy(x => evalFunction.score(x.rawItems))
+      .minBy(x => x.score)
   }
 }
