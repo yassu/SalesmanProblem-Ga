@@ -9,6 +9,7 @@ case class Population[T](initRawIndividual: Seq[T], evalFunction: EvaluationFunc
   val numberOfEliteSelection = 10
   val numberOfMutation = 10
   val numberOfCrossingOver = (size - numberOfEliteSelection - numberOfMutation) / 2
+  private var rawEvolvedCount: Int = 0
 
   private[logic] var individuals: Seq[Individual[T]] = (for(i <- (0 until size)) yield
     Individual(Random.shuffle(initIndividual.rawItems), evalFunction))
@@ -16,19 +17,18 @@ case class Population[T](initRawIndividual: Seq[T], evalFunction: EvaluationFunc
 
   lazy val bestIndividualSeq: Seq[T] = individuals.head.rawItems
 
-  private[logic] def evolveOne(): Unit =
+  private[logic] def evolveOne(): Unit = {
     individuals = (eliteSelection ++: mutation ++: crossOver)
       .sortBy(x => x.score)
+    rawEvolvedCount += 1
+  }
 
   def evolve(count: Int): Unit =
     (0 until count).foreach(j => {
-      if ((j + 1) % 100 == 0) {
-        print(j + 1)
-        println(s" evaluated value: ${individuals.head.score}")
-        // individuals.foreach(println)
-      }
       evolveOne()
     })
+
+  def evolvedCount: Int = rawEvolvedCount
 
   private def eliteSelection: Seq[Individual[T]] = individuals.take(numberOfEliteSelection)
 

@@ -18,7 +18,7 @@ object SalesmanProblem extends JFXApp {
 
   private val canvas = new Canvas(CANVAS_SIZE, CANVAS_SIZE)
   private val gc = canvas.graphicsContext2D
-  private val stateLabel = Label("Sample")
+  private val stateLabel = Label("")
   private var points = Seq[(Int, Int)]()
   private var population = logic.Population(points, SalesmanEvaluationFunction)
 
@@ -39,7 +39,7 @@ object SalesmanProblem extends JFXApp {
   }
 
   val configBox = new HBox {
-    val numberOfSamplesButton = new Button("Number Of Points:") {disable=false}
+    val numberOfSamplesButton = new Button("Number Of Points") {disable=false}
     val numberOfSamplesSpinner = new Spinner[Int](10, 100, 30, 5)
     numberOfSamplesSpinner.maxWidth = 70
     val numberOfSampleButton = new Button {
@@ -50,6 +50,7 @@ object SalesmanProblem extends JFXApp {
         val n = numberOfSamplesSpinner.value.value
         points = (0 until n).map(n => (Random.nextInt(CANVAS_SIZE), Random.nextInt(CANVAS_SIZE)))
           .toSeq
+        updateStateLabel()
 
         val oldStroke = gc.stroke
         gc.stroke = RED
@@ -68,8 +69,8 @@ object SalesmanProblem extends JFXApp {
       onAction = () => {
         val n = numberOfSamplesSpinner.value.value
 
-        val numberOfEvalCount = countOfEvalSpinner.value.value
         population = logic.Population(points, SalesmanEvaluationFunction)
+        val numberOfEvalCount = countOfEvalSpinner.value.value
         population.evolve(numberOfEvalCount)
         points = population.bestIndividualSeq
         updateStateLabel()
@@ -96,7 +97,9 @@ object SalesmanProblem extends JFXApp {
   }
 
   def updateStateLabel() = {
-    stateLabel.text = "score:" + SalesmanEvaluationFunction.score(points).toInt.toString
+    stateLabel.text =
+      s"evolvedCount: ${population.evolvedCount}, " +
+      "score: " + SalesmanEvaluationFunction.score(points).toInt.toString
   }
 
   stage = new PrimaryStage {
