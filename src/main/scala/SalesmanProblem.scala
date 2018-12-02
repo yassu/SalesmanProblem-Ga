@@ -18,6 +18,7 @@ object SalesmanProblem extends JFXApp {
 
   private val canvas = new Canvas(CANVAS_SIZE, CANVAS_SIZE)
   private val gc = canvas.graphicsContext2D
+  private val stateLabel = Label("Sample")
   private var points = Seq[(Int, Int)]()
   private var population = logic.Population(points, SalesmanEvaluationFunction)
 
@@ -26,6 +27,14 @@ object SalesmanProblem extends JFXApp {
 
     children = Seq(
       canvas,
+    )
+  }
+
+  val stateBox = new HBox {
+    padding = Insets(20)
+
+    children = Seq(
+      stateLabel
     )
   }
 
@@ -63,6 +72,7 @@ object SalesmanProblem extends JFXApp {
         population = logic.Population(points, SalesmanEvaluationFunction)
         population.evolve(numberOfEvalCount)
         points = population.bestIndividualSeq
+        updateStateLabel()
 
         gc.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE)
         points.foreach(p => gc.fillOval(p._1, p._2, POINT_SIZE, POINT_SIZE))
@@ -85,6 +95,10 @@ object SalesmanProblem extends JFXApp {
     )
   }
 
+  def updateStateLabel() = {
+    stateLabel.text = "score:" + SalesmanEvaluationFunction.score(points).toInt.toString
+  }
+
   stage = new PrimaryStage {
     title = "SalesmanProblem"
     scene = new Scene {
@@ -93,6 +107,7 @@ object SalesmanProblem extends JFXApp {
         children=Seq(
           configBox,
           mainBox,
+          stateBox,
         )
       }
     }
