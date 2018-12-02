@@ -3,7 +3,7 @@ package salesman_problem.logic
 import scala.util.Random
 
 case class Population[T](initRawIndividual: Seq[T], evalFunction: EvaluationFunction[T]) {
-  val initIndividual = Individual[T](initRawIndividual)
+  val initIndividual = Individual[T](initRawIndividual, evalFunction)
   val size = 100
   val numberOfSelectedBySelection = 10
   val numberOfEliteSelection = 10
@@ -11,7 +11,7 @@ case class Population[T](initRawIndividual: Seq[T], evalFunction: EvaluationFunc
   val numberOfCrossingOver = (size - numberOfEliteSelection - numberOfMutation) / 2
 
   private[logic] var individuals: Seq[Individual[T]] = (for(i <- (0 until size)) yield
-    Individual(initIndividual.rawItems.sortBy(_ => Random.nextInt)))
+    Individual(initIndividual.rawItems.sortBy(_ => Random.nextInt), evalFunction))
     .sortBy(x => evalFunction.score(x.rawItems))
 
   private[logic] def evolveOne(): Unit =

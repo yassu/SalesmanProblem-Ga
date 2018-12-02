@@ -2,7 +2,10 @@ package salesman_problem.logic
 import scala.collection.mutable
 import scala.util.Random
 
-private[logic] case class Individual[T](val rawItems: Seq[T]) {
+private[logic] case class Individual[T](
+    val rawItems: Seq[T], evalFunction: EvaluationFunction[T]) {
+  val score = evalFunction.score(this)
+
   def size: Int = rawItems.size
   def apply(ind: Int): T = rawItems(ind)
 
@@ -14,7 +17,8 @@ private[logic] case class Individual[T](val rawItems: Seq[T]) {
         else if (i == pos1) pos2
         else pos1
       )
-      .map(i => rawItems(i))
+      .map(i => rawItems(i)),
+      evalFunction
   )
 
   def mutation: Individual[T] = {
@@ -48,7 +52,8 @@ private[logic] object Individual {
       })
 
       Individual(
-        for(i <- 0 until len) yield rawChild(i)
+        for(i <- 0 until len) yield rawChild(i),
+          parent1.evalFunction
       )
     }
 
