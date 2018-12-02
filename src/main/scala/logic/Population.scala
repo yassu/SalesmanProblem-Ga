@@ -27,10 +27,10 @@ case class Population[T](initRawIndividual: Seq[T], evalFunction: EvaluationFunc
   def evolve(count: Int): Unit = {
     var startMSec = System.currentTimeMillis
     (0 until count).foreach(j => {
+      evolveOne()
       if ((j + 1) % 100 == 0) {
         println(s"count: ${j + 1}, score: ${individuals.head.score}")
       }
-      evolveOne()
     })
     rawSpentMSecForEvolve += (System.currentTimeMillis - startMSec)
   }
