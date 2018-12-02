@@ -74,7 +74,16 @@ object SalesmanProblem extends JFXApp {
     val reRunButton = new Button {
       text="ReRun"
       onAction = () => {
-        println("ReRun Button is pressed.")
+        val numberOfEvalCount = countOfEvalSpinner.value.value
+        population.evolve(numberOfEvalCount)
+        points = population.bestIndividualSeq
+
+        gc.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE)
+        points.foreach(p => gc.fillOval(p._1, p._2, POINT_SIZE, POINT_SIZE))
+        val oldStroke = gc.stroke
+        gc.stroke = RED
+        gc.strokePolyline(points.map(t => (t._1.toDouble + POINT_SIZE / 2.0, t._2.toDouble + POINT_SIZE / 2.0)))
+        gc.stroke = oldStroke
       }
     }
 
