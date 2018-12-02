@@ -5,20 +5,20 @@ import org.scalatest.FunSpec
 class PopulationSpec extends FunSpec {
   describe("About Init") {
     it("Able to Init") {
-      val individual = Individual[Int](Seq(8, 9, 10))
-      Population(individual, TestEvalFunc)
+      val rawIndividual = Seq(8, 9, 10)
+      Population(rawIndividual, TestEvalFunc)
     }
 
     it("size") {
-      val individual = Individual[Int](Seq(1, 2, 3))
-      val population = Population(individual, TestEvalFunc)
+      val rawIndividual = Seq(1, 2, 3)
+      val population = Population(rawIndividual, TestEvalFunc)
       assert(population.size == 100)
     }
   }
 
   describe("EvolveOne") {
-    val individual = Individual[Int]((0 until 10).toSeq)
-    val population = Population(individual, TestEvalFunc)
+    val rawIndividual = (0 until 10).toSeq
+    val population = Population(rawIndividual, TestEvalFunc)
 
     it("size test") {
       population.evolveOne()

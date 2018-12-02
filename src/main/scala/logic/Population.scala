@@ -2,7 +2,8 @@ package salesman_problem.logic
 
 import scala.util.Random
 
-case class Population[T](initIndividual: Individual[T], evalFunction: EvaluationFunction[T]) {
+case class Population[T](initRawIndividual: Seq[T], evalFunction: EvaluationFunction[T]) {
+  val initIndividual = Individual[T](initRawIndividual)
   val size = 100
   val numberOfSelectedBySelection = 10
   val numberOfEliteSelection = 10
