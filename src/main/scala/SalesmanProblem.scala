@@ -39,7 +39,7 @@ object SalesmanProblem extends JFXApp {
 
   val configBox = new HBox {
     val numberOfSamplesButton = new Button("Number Of Points") {disable=false}
-    val numberOfSamplesSpinner = new Spinner[Int](10, 1000, 30, 10)
+    val numberOfSamplesSpinner = new Spinner[Int](10, 500, 30, 10)
     numberOfSamplesSpinner.maxWidth = 70
     val numberOfSampleButton = new Button {
       text="Init"
@@ -86,7 +86,8 @@ object SalesmanProblem extends JFXApp {
   def updateStateLabel() = {
     stateLabel.text =
       s"evolvedCount: ${population.evolvedCount}, " +
-        "score: " + SalesmanEvaluationFunction.score(points).toInt.toString
+        s"score: ${SalesmanEvaluationFunction.score(points).toInt.toString}, " +
+        s"takeTime(sec): ${population.spentMSecForEvolve / 1000}"
   }
 
   def updateCanvas() = {
