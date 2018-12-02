@@ -21,16 +21,20 @@ case class Population[T](initRawIndividual: Seq[T], evalFunction: EvaluationFunc
       .sortBy(x => evalFunction.score(x.rawItems))
 
   def evolve(count: Int): Unit =
-    (0 until count).foreach(_ => evolveOne())
+    (0 until count).foreach(j => {
+      if ((j + 1) % 100 == 0) {
+        println(j)
+      }
+      evolveOne()
+    })
 
   private def eliteSelection: Seq[Individual[T]] = individuals.take(numberOfEliteSelection)
 
-  private def mutation: Seq[Individual[T]] = {
+  private def mutation: Seq[Individual[T]] =
     (0 until numberOfMutation).map(i => {
       val parent = selectNicer
       parent.mutation
     })
-  }
 
   private def crossOver: Seq[Individual[T]] =
     (0 until numberOfCrossingOver)
@@ -42,8 +46,9 @@ case class Population[T](initRawIndividual: Seq[T], evalFunction: EvaluationFunc
     })
     .flatMap(x => x).toSeq
 
-  private def selectNicer: Individual[T] =
+  private def selectNicer: Individual[T] = {
     Random.shuffle((0 until initIndividual.size).toList).take(10)
       .map(i => individuals(i))
       .minBy(x => evalFunction.score(x.rawItems))
+  }
 }
